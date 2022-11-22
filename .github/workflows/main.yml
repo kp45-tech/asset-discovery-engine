@@ -1,0 +1,32 @@
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      # Setup JDK 17
+      - uses: actions/setup-java@v2
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+      # Build with Maven
+      - name: Build with Maven
+        run: mvn -B package --file pom.xml
+      # Upload artifact
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: artifact
+          path: target/*.jar
+
+  api:
+    runs-on: ubuntu-latest
+    steps:
+      - name: OpenAPI Generator Action
+        uses: kpurdon/openapi-generator-action@v0.0.3
+        with:
+          args: "generate -i docs/api.yaml -g spring -o ./generated-code"
