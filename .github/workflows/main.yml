@@ -29,4 +29,4 @@ jobs:
       - name: OpenAPI Generator Action
         uses: kpurdon/openapi-generator-action@v0.0.3
         with:
-          args: "generate -i docs/api.yaml -g spring -o ./generated-code"
+          args: "generate -i ./docs/api.yaml -g spring -o ./generated-code"
